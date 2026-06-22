@@ -17,6 +17,13 @@ interface GameState {
   // Timer state
   timerStartedAt: number | null;
   startTimer: () => void;
+
+  // Game state
+  currentPuzzleIndex: number;
+  attemptsLeft: number;
+  isGameOver: boolean;
+  submitAnswer: (isCorrect: boolean) => void;
+  resetGame: () => void;
 }
 
 export const useGameStore = create<GameState>()(
@@ -45,6 +52,24 @@ export const useGameStore = create<GameState>()(
       
       timerStartedAt: null,
       startTimer: () => set({ timerStartedAt: Date.now() }),
+
+      currentPuzzleIndex: 0,
+      attemptsLeft: 3,
+      isGameOver: false,
+      submitAnswer: (isCorrect) => set((state) => {
+        if (state.isGameOver) return state;
+
+        if (isCorrect) {
+          return { currentPuzzleIndex: state.currentPuzzleIndex + 1, attemptsLeft: 3 }; // Reset attempts on next puzzle
+        } else {
+          const newAttempts = state.attemptsLeft - 1;
+          return {
+            attemptsLeft: newAttempts,
+            isGameOver: newAttempts <= 0,
+          };
+        }
+      }),
+      resetGame: () => set({ currentPuzzleIndex: 0, attemptsLeft: 3, isGameOver: false, timerStartedAt: Date.now() }),
     }),
     {
       name: 'escape-room-storage',
