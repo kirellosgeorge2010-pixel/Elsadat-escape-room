@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --background: #121212;
+  --foreground: #ededed;
+  --neon-green: #39FF14;
+  --electric-blue: #08f7fe;
+  --amber-gold: #FFBF00;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-neon-green: var(--neon-green);
+  --color-electric-blue: var(--electric-blue);
+  --color-amber-gold: var(--amber-gold);
+  
+  --font-sans: var(--font-cairo), Arial, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom Glitch Effect Utilities */
+@layer utilities {
+  .text-glitch {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .text-glitch::before,
+  .text-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+  
+  .text-glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--electric-blue);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+  }
+  
+  .text-glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--neon-green);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(20% 0 80% 0); }
+  20% { clip-path: inset(60% 0 10% 0); }
+  40% { clip-path: inset(40% 0 50% 0); }
+  60% { clip-path: inset(80% 0 5% 0); }
+  80% { clip-path: inset(10% 0 70% 0); }
+  100% { clip-path: inset(30% 0 20% 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(10% 0 60% 0); }
+  20% { clip-path: inset(30% 0 20% 0); }
+  40% { clip-path: inset(70% 0 10% 0); }
+  60% { clip-path: inset(20% 0 50% 0); }
+  80% { clip-path: inset(50% 0 30% 0); }
+  100% { clip-path: inset(5% 0 80% 0); }
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(18, 18, 18, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
